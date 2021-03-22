@@ -70,19 +70,15 @@ void MidiSurface::exec()
     ImGui::Begin("Status");
 
     ImGui::Text("Message");
-    switch (last_message_size_) {
-    case 0:
+    for (int i = 0, n = last_message_size_; i < n; ++i) {
+        if (i > 0)
+            ImGui::SameLine();
+        ImGui::TextColored(selection_color, "%02X", last_message_[i]);
+    }
+    for (int i = last_message_size_; i < 3; ++i) {
+        if (i > 0)
+            ImGui::SameLine();
         ImGui::TextColored(selection_color, "--");
-        break;
-    case 1:
-        ImGui::TextColored(selection_color, "%02X", last_message_[0]);
-        break;
-    case 2:
-        ImGui::TextColored(selection_color, "%02X %02X", last_message_[0], last_message_[1]);
-        break;
-    case 3:
-        ImGui::TextColored(selection_color, "%02X %02X %02X", last_message_[0], last_message_[1], last_message_[2]);
-        break;
     }
 
     ImGui::End();
