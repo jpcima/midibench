@@ -151,9 +151,9 @@ void MidiSurface::write_midi(const uint8_t* data, uint32_t size)
 {
     midi_port_->sendMessage(data, size);
 
-    for (uint32_t i = 0; i < size && i < sizeof(last_message_size_); ++i)
+    for (uint32_t i = 0; i < size && i < sizeof(last_message_); ++i)
         last_message_[i] = data[i];
-    for (uint32_t i = size; i < sizeof(last_message_size_); ++i)
+    for (uint32_t i = size; i < sizeof(last_message_); ++i)
         last_message_[i] = 0;
     last_message_size_ = size;
 }
