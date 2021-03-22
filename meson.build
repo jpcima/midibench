@@ -1,6 +1,7 @@
-project('simple', 'cpp')
+project('simple', ['c', 'cpp'])
 
 sdl2 = dependency('sdl2')
+sdl2_image = dependency('SDL2_image')
 opengl = dependency('GL')
 glew = dependency('glew')
 rtmidi = dependency('rtmidi')
@@ -27,12 +28,20 @@ includes += [
         'thirdparty/imgui/backends',
 ]
 
+# whereami
+sources += [
+        'thirdparty/whereami/src/whereami.c',
+]
+includes += [
+        'thirdparty/whereami/src',
+]
+
 #
 executable(
   'midibench',
   sources : sources,
   include_directories : includes,
-  dependencies : [ sdl2, opengl, glew, rtmidi ],
+  dependencies : [ sdl2, sdl2_image, opengl, glew, rtmidi ],
   install : true)
 
 #

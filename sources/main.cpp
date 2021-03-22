@@ -3,11 +3,27 @@
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
 #include <SDL.h>
+#include <SDL_image.h>
 #include <GL/glew.h>
+#include <whereami.h>
+#include <string>
 #include <cstdio>
 
 int main()
 {
+    // Setup program path
+    unsigned exePathSize {};
+    unsigned exeDirSize {};
+
+    exePathSize = wai_getExecutablePath(nullptr, 0, nullptr);
+    if (int(exePathSize) == -1)
+        return 1;
+
+    std::string exePath;
+    exePath.resize(exePathSize);
+    wai_getExecutablePath(&exePath[0], exePathSize, (int *)&exeDirSize);
+    std::string exeDir = exePath.substr(0, exeDirSize);
+
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         printf("Error: %s\n", SDL_GetError());
@@ -46,6 +62,13 @@ int main()
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1);  // Enable vsync
+
+    // Set up window icon
+    std::string iconPath = exeDir + "/../share/icons/hicolor/512x512/apps/midibench.png";
+    if (SDL_Surface *icon = IMG_Load(iconPath.c_str())) {
+        SDL_SetWindowIcon(window, icon);
+        SDL_FreeSurface(icon);
+    }
 
     // Initialize OpenGL loader
     bool err = glewInit() != GLEW_OK;
