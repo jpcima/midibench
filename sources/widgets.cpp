@@ -25,6 +25,7 @@ bool ToggleButtonEx(const char* label, bool* value, const ImVec2& size_arg, ImGu
 
     if (window->DC.ItemFlags & ImGuiItemFlags_ButtonRepeat)
         flags |= ImGuiButtonFlags_Repeat;
+
     bool hovered, held;
     bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, flags);
 
@@ -54,4 +55,9 @@ bool ToggleButtonEx(const char* label, bool* value, const ImVec2& size_arg, ImGu
 bool ToggleButton(const char* label, bool* value, const ImVec2& size_arg)
 {
     return ToggleButtonEx(label, value, size_arg, ImGuiButtonFlags_None);
+}
+
+bool KickButton(const char* label, bool* value, const ImVec2& size_arg)
+{
+    return ToggleButtonEx(label, value, size_arg, ImGuiButtonFlags_PressedOnClick|ImGuiButtonFlags_PressedOnRelease);
 }

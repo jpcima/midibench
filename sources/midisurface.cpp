@@ -112,7 +112,13 @@ void MidiSurface::exec()
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
         }
 
-        if (ToggleButton(name, &keypressed_[i])) {
+        bool key_interact;
+        if (hold_keys_pressed_)
+            key_interact = ToggleButton(name, &keypressed_[i]);
+        else
+            key_interact = KickButton(name, &keypressed_[i]);
+
+        if (key_interact) {
             if (keypressed_[i])
                 write_midi3(0x90|channel_, i, key_on_velocity_);
             else
@@ -123,6 +129,16 @@ void MidiSurface::exec()
         if (i == selected_key) {
             ImGui::PopStyleColor();
             ImGui::PopStyleVar();
+        }
+    }
+
+    ImGui::NextColumn();
+    ImGui::Spacing();
+    ImGui::Spacing();
+    if (ImGui::Checkbox("Hold", &hold_keys_pressed_)) {
+        if (!hold_keys_pressed_) {
+            for (int i = 0; i < 128; ++i)
+                keypressed_[i] = false;
         }
     }
 

@@ -31,6 +31,7 @@ private:
     int channel_aftertouch_ {};
     int key_on_velocity_ {127};
     int key_off_velocity_ {};
+    bool hold_keys_pressed_ {};
     int selected_key_ {-1};
     uint8_t last_message_[3] {};
     int last_message_size_ = 0;
