@@ -34,3 +34,11 @@ executable(
   include_directories : includes,
   dependencies : [ sdl2, opengl, glew, rtmidi ],
   install : true)
+
+#
+install_data(
+  ['resources/linux/midibench.desktop'],
+  install_dir : join_paths(get_option('datadir'), 'applications'))
+install_data(
+  ['resources/linux/midibench.png'],
+  install_dir : join_paths(get_option('datadir'), 'icons/hicolor/512x512/apps'))
