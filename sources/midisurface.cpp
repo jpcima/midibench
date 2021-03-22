@@ -98,7 +98,7 @@ void MidiSurface::exec()
     };
 
     ImGui::Columns(2);
-    int key_selected = last_pressed_key_;
+    int selected_key = selected_key_;
     for (int i = 0; i < 128; ++i) {
         if (i > 0 && i % 12 == 0)
             ImGui::NextColumn();
@@ -107,21 +107,20 @@ void MidiSurface::exec()
         char name[12] = {};
         sprintf(name, "%3d\n%s", i, key_names[i % 12]);
 
-        if (i == key_selected) {
+        if (i == selected_key) {
             ImGui::PushStyleColor(ImGuiCol_Border, selection_color);
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
         }
 
         if (ToggleButton(name, &keypressed_[i])) {
-            if (keypressed_[i]) {
+            if (keypressed_[i])
                 write_midi3(0x90|channel_, i, key_on_velocity_);
-                last_pressed_key_ = i;
-            }
             else
                 write_midi3(0x80|channel_, i, key_off_velocity_);
+            selected_key_ = i;
         }
 
-        if (i == key_selected) {
+        if (i == selected_key) {
             ImGui::PopStyleColor();
             ImGui::PopStyleVar();
         }
@@ -149,10 +148,10 @@ void MidiSurface::exec()
     ImGui::Separator();
     ImGui::Text("Current key:");
     ImGui::SameLine();
-    ImGui::TextColored(selection_color, "%d", last_pressed_key_);
+    ImGui::TextColored(selection_color, "%d", selected_key_);
     if (ImGui::SliderInt("Key Aftertouch", &aftertouch_, 0, 127)) {
-        if (last_pressed_key_ != -1)
-            write_midi3(0xa0|channel_, last_pressed_key_, aftertouch_);
+        if (selected_key_ != -1)
+            write_midi3(0xa0|channel_, selected_key_, aftertouch_);
     }
     if (ImGui::SliderInt("Ch Aftertouch", &channel_aftertouch_, 0, 127))
         write_midi2(0xd0|channel_, channel_aftertouch_);
