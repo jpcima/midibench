@@ -121,6 +121,8 @@ void MidiSurface::exec()
         if (key_interact) {
             if (keypressed_[i])
                 write_midi3(0x90|channel_, i, key_on_velocity_);
+            else if (key_off_velocity_ == 0)
+                write_midi3(0x90|channel_, i, 0);
             else
                 write_midi3(0x80|channel_, i, key_off_velocity_);
             selected_key_ = i;
