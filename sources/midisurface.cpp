@@ -36,6 +36,9 @@ int MidiSurface::window_height()
 
 void MidiSurface::exec()
 {
+    const ImVec4 selection_color(1.0f, 0.9f, 0.0f, 1.0f);
+
+    ///
     ImGui::SetNextWindowPos(ImVec2(10, 10));
     ImGui::SetNextWindowSize(ImVec2(1100, 445));
     ImGui::Begin("Controllers");
@@ -67,19 +70,18 @@ void MidiSurface::exec()
     ImGui::Begin("Status");
 
     ImGui::Text("Message");
-    ImVec4 message_color(1.0f, 0.9f, 0.0f, 1.0f);
     switch (last_message_size_) {
     case 0:
-        ImGui::TextColored(message_color, "--");
+        ImGui::TextColored(selection_color, "--");
         break;
     case 1:
-        ImGui::TextColored(message_color, "%02X", last_message_[0]);
+        ImGui::TextColored(selection_color, "%02X", last_message_[0]);
         break;
     case 2:
-        ImGui::TextColored(message_color, "%02X %02X", last_message_[0], last_message_[1]);
+        ImGui::TextColored(selection_color, "%02X %02X", last_message_[0], last_message_[1]);
         break;
     case 3:
-        ImGui::TextColored(message_color, "%02X %02X %02X", last_message_[0], last_message_[1], last_message_[2]);
+        ImGui::TextColored(selection_color, "%02X %02X %02X", last_message_[0], last_message_[1], last_message_[2]);
         break;
     }
 
@@ -96,6 +98,7 @@ void MidiSurface::exec()
     };
 
     ImGui::Columns(2);
+    int key_selected = last_pressed_key_;
     for (int i = 0; i < 128; ++i) {
         if (i > 0 && i % 12 == 0)
             ImGui::NextColumn();
@@ -103,16 +106,24 @@ void MidiSurface::exec()
             ImGui::SameLine();
         char name[12] = {};
         sprintf(name, "%3d\n%s", i, key_names[i % 12]);
+
+        if (i == key_selected) {
+            ImGui::PushStyleColor(ImGuiCol_Border, selection_color);
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
+        }
+
         if (ToggleButton(name, &keypressed_[i])) {
             if (keypressed_[i]) {
                 write_midi3(0x90|channel_, i, key_on_velocity_);
                 last_pressed_key_ = i;
             }
-            else {
+            else
                 write_midi3(0x80|channel_, i, key_off_velocity_);
-                if (last_pressed_key_ == i)
-                    last_pressed_key_ = -1;
-            }
+        }
+
+        if (i == key_selected) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleVar();
         }
     }
 
@@ -136,7 +147,9 @@ void MidiSurface::exec()
         write_midi3(0xe0|channel_, value & 0x7f, value >> 7);
     }
     ImGui::Separator();
-    ImGui::Text("Current key: %d\n", last_pressed_key_);
+    ImGui::Text("Current key:");
+    ImGui::SameLine();
+    ImGui::TextColored(selection_color, "%d", last_pressed_key_);
     if (ImGui::SliderInt("Key Aftertouch", &aftertouch_, 0, 127)) {
         if (last_pressed_key_ != -1)
             write_midi3(0xa0|channel_, last_pressed_key_, aftertouch_);
