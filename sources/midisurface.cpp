@@ -7,7 +7,7 @@
 MidiSurface::MidiSurface()
     : midi_port_(new RtMidiOut(RtMidi::UNSPECIFIED, application_name()))
 {
-    midi_port_->openVirtualPort();
+    midi_port_->openVirtualPort("Output");
 }
 
 MidiSurface::~MidiSurface()
