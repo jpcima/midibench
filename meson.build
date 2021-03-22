@@ -32,4 +32,5 @@ executable(
   'midisurface',
   sources : sources,
   include_directories : includes,
-  dependencies : [ sdl2, opengl, glew, rtmidi ])
+  dependencies : [ sdl2, opengl, glew, rtmidi ],
+  install : true)
