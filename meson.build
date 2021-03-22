@@ -40,5 +40,5 @@ install_data(
   ['resources/linux/midibench.desktop'],
   install_dir : join_paths(get_option('datadir'), 'applications'))
 install_data(
-  ['resources/linux/midibench.png'],
+  ['resources/icons/512x512/midibench.png'],
   install_dir : join_paths(get_option('datadir'), 'icons/hicolor/512x512/apps'))
