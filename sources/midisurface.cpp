@@ -211,10 +211,10 @@ const char* MidiSurface::controller_name(int cc)
     case 11:         return "Expression";
     case 12:         return "Fx 1";
     case 13:         return "Fx 2";
-    case 16:         return "Gen 1";
-    case 17:         return "Gen 2";
-    case 18:         return "Gen 3";
-    case 19:         return "Gen 4";
+    case 16:         return "General 1";
+    case 17:         return "General 2";
+    case 18:         return "General 3";
+    case 19:         return "General 4";
     case 32:         return "LSB 0";
     case 33:         return "LSB 1";
     case 34:         return "LSB 2";
