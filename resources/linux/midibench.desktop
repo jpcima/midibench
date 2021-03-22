@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=MIDI Bench
+Comment=MIDI tool for developers
+Exec=midibench
+Icon=midibench
+Categories=AudioVideo;Audio;Midi;
+Terminal=false
