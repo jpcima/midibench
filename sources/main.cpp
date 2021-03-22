@@ -1,4 +1,4 @@
-#include "midisurface.h"
+#include "midibench.h"
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
@@ -39,9 +39,9 @@ int main()
         (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
     SDL_Window *window =
         SDL_CreateWindow(
-            MidiSurface::window_title(),
+            MidiBench::window_title(),
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            MidiSurface::window_width(), MidiSurface::window_height(),
+            MidiBench::window_width(), MidiBench::window_height(),
             window_flags);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
@@ -69,7 +69,7 @@ int main()
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     // Our state
-    MidiSurface app;
+    MidiBench app;
     const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop

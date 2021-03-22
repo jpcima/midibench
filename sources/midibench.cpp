@@ -1,40 +1,40 @@
-#include "midisurface.h"
+#include "midibench.h"
 #include "widgets.h"
 #include <imgui.h>
 #include <rtmidi/RtMidi.h>
 #include <cstdio>
 
-MidiSurface::MidiSurface()
+MidiBench::MidiBench()
     : midi_port_(new RtMidiOut(RtMidi::UNSPECIFIED, application_name()))
 {
     midi_port_->openVirtualPort("Output");
 }
 
-MidiSurface::~MidiSurface()
+MidiBench::~MidiBench()
 {
 }
 
-const char* MidiSurface::application_name()
+const char* MidiBench::application_name()
 {
-    return "MIDI surface";
+    return "MIDI Bench";
 }
 
-const char* MidiSurface::window_title()
+const char* MidiBench::window_title()
 {
     return application_name();
 }
 
-int MidiSurface::window_width()
+int MidiBench::window_width()
 {
     return 1280;
 }
 
-int MidiSurface::window_height()
+int MidiBench::window_height()
 {
     return 720;
 }
 
-void MidiSurface::exec()
+void MidiBench::exec()
 {
     const ImVec4 selection_color(1.0f, 0.9f, 0.0f, 1.0f);
 
@@ -173,7 +173,7 @@ void MidiSurface::exec()
     ImGui::End();
 }
 
-void MidiSurface::write_midi(const uint8_t* data, uint32_t size)
+void MidiBench::write_midi(const uint8_t* data, uint32_t size)
 {
     midi_port_->sendMessage(data, size);
 
@@ -184,19 +184,19 @@ void MidiSurface::write_midi(const uint8_t* data, uint32_t size)
     last_message_size_ = size;
 }
 
-void MidiSurface::write_midi2(uint8_t status, uint8_t data)
+void MidiBench::write_midi2(uint8_t status, uint8_t data)
 {
     uint8_t buf[] = {status, data};
     write_midi(buf, 2);
 }
 
-void MidiSurface::write_midi3(uint8_t status, uint8_t data1, uint8_t data2)
+void MidiBench::write_midi3(uint8_t status, uint8_t data1, uint8_t data2)
 {
     uint8_t buf[] = {status, data1, data2};
     write_midi(buf, 3);
 }
 
-const char* MidiSurface::controller_name(int cc)
+const char* MidiBench::controller_name(int cc)
 {
     switch (cc) {
     case 0:          return "Bank Sel";

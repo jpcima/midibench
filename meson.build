@@ -8,7 +8,7 @@ rtmidi = dependency('rtmidi')
 sources = [
         'sources/main.cpp',
         'sources/widgets.cpp',
-        'sources/midisurface.cpp',
+        'sources/midibench.cpp',
 ]
 includes = [
 ]
@@ -29,7 +29,7 @@ includes += [
 
 #
 executable(
-  'midisurface',
+  'midibench',
   sources : sources,
   include_directories : includes,
   dependencies : [ sdl2, opengl, glew, rtmidi ],

@@ -3,10 +3,10 @@
 #include <cstdint>
 class RtMidiOut;
 
-class MidiSurface {
+class MidiBench {
 public:
-    MidiSurface();
-    ~MidiSurface();
+    MidiBench();
+    ~MidiBench();
 
     static const char* application_name();
     static const char* window_title();
